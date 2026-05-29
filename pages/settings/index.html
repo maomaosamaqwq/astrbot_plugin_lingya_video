@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>閻忎絻濞婄憴鍡涱暥 - 鐠佸墽鐤?/title>
+    <title>灵芽视频生成 - 设置</title>
     <style>
         :root {
             --bg: #f5f7fa;
@@ -127,44 +127,44 @@
 </head>
 <body>
     <div class="container">
-        <h1>棣冨箑 閻忎絻濞婄憴鍡涱暥閻㈢喐鍨?璺?鐠佸墽鐤?/h1>
+        <h1>🎬 灵芽视频生成 · 设置</h1>
 
         <div class="card">
-            <div class="card-title">API 闁板秶鐤?/div>
+            <div class="card-title">API 配置</div>
             <div class="form-group">
-                <label>API 閸︽澘娼?/label>
+                <label>API 地址</label>
                 <input type="text" id="apiBase" placeholder="https://api.lingyaai.cn" />
-                <div class="hint">閻忎絻濞?API 閸╄櫣顢呴崷鏉挎絻閿涘矂绮拋銈勮礋 https://api.lingyaai.cn</div>
+                <div class="hint">灵芽 API 服务器地址，默认 https://api.lingyaai.cn</div>
             </div>
             <div class="form-group">
                 <label>API Key</label>
                 <input type="password" id="apiKey" placeholder="sk-..." />
-                <div class="hint">閸︺劎浼掗懞鑺ュ付閸掕泛褰撮妴灞兼姢閻楀被鈧秹銆夐棃銏犲灡瀵?/div>
+                <div class="hint">在灵芽AI控制台获取的 API Key</div>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-title">閻㈢喐鍨氶崣鍌涙殶</div>
+            <div class="card-title">生成设置</div>
             <div class="form-group">
-                <label>濡€崇€?/label>
+                <label>模型</label>
                 <select id="model">
-                    <option value="wan2.7-t2v">閺傚洨鏁撶憴鍡涱暥 (wan2.7-t2v)</option>
-                    <option value="wan2.7-i2v">閸ュ墽鏁撶憴鍡涱暥 (wan2.7-i2v)</option>
-                    <option value="wan2.7-r2v">閸欏倽鈧啰鏁撶憴鍡涱暥 (wan2.7-r2v)</option>
-                    <option value="wan2.7-videoedit">鐟欏棝顣剁紓鏍帆 (wan2.7-videoedit)</option>
+                    <option value="wan2.7-t2v">文生视频 (wan2.7-t2v)</option>
+                    <option value="wan2.7-i2v">图生视频 (wan2.7-i2v)</option>
+                    <option value="wan2.7-r2v">参考生视频 (wan2.7-r2v)</option>
+                    <option value="wan2.7-videoedit">视频编辑 (wan2.7-videoedit)</option>
                 </select>
-                <div class="hint">閺傚洨鏁撶憴鍡涱暥閸╄桨绨弬鍥ㄦ拱閻㈢喐鍨氶敍娑樻禈閻㈢喕顫嬫０?閸欏倽鈧啰鏁撶憴鍡涱暥/鐟欏棝顣剁紓鏍帆闂団偓鐟曚椒绱堕崗銉ョ崯娴ｆ挾绀岄弶?/div>
+                <div class="hint">文生视频适用于文字描述生成，图生视频/参考生视频需要提供图片或视频</div>
             </div>
             <div class="inline-row">
                 <div class="form-group">
-                    <label>閸掑棜椴搁悳?/label>
+                    <label>分辨率</label>
                     <select id="resolution">
                         <option value="720P">720P</option>
                         <option value="1080P">1080P</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>姒涙顓婚弮鍫曟毐 (缁?</label>
+                    <label>默认时长 (秒)</label>
                     <input type="number" id="duration" min="2" max="15" placeholder="5" />
                     <div class="hint">t2v/i2v: 2-15, r2v/videoedit: 2-10</div>
                 </div>
@@ -172,33 +172,33 @@
         </div>
 
         <div class="card">
-            <div class="card-title">娴犺濮熼幒褍鍩?/div>
+            <div class="card-title">高级设置</div>
             <div class="inline-row">
                 <div class="form-group">
-                    <label>閺堚偓婢堆冭嫙閸欐垳鎹㈤崝鈩冩殶</label>
+                    <label>最大并发生成数</label>
                     <input type="number" id="maxConcurrent" min="1" max="10" placeholder="3" />
-                    <div class="hint">閸氬本妞傛潻娑滎攽閻ㄥ嫮鏁撻幋鎰崲閸斺€茬瑐闂?/div>
+                    <div class="hint">同时进行的视频生成任务数量</div>
                 </div>
                 <div class="form-group">
-                    <label>鐡掑懏妞傞弮鍫曟？ (缁?</label>
+                    <label>轮询超时 (秒)</label>
                     <input type="number" id="pollTimeout" min="60" max="1800" placeholder="300" />
-                    <div class="hint">缁涘绶熺憴鍡涱暥鐎瑰本鍨氶惃鍕付闂€鎸庢闂?/div>
+                    <div class="hint">视频生成最长等待时间</div>
                 </div>
                 <div class="form-group">
-                    <label>鏉烆喛顕楅梻鎾 (缁?</label>
+                    <label>轮询间隔 (秒)</label>
                     <input type="number" id="pollInterval" min="5" max="60" placeholder="15" />
-                    <div class="hint">濮ｅ繑顐奸弻銉嚄閻樿埖鈧胶娈戦梻鎾</div>
+                    <div class="hint">每次查询生成状态的间隔</div>
                 </div>
             </div>
         </div>
 
         <div style="display:flex; gap:12px;">
-            <button class="btn btn-primary" id="saveBtn">棣冩崙 娣囨繂鐡ㄧ拋鍓х枂</button>
-            <button class="btn btn-primary" id="reloadBtn" style="background:#6c757d;">棣冩敡 闁插秵鏌婇崝鐘烘祰</button>
+            <button class="btn btn-primary" id="saveBtn">💾 保存设置</button>
+            <button class="btn btn-primary" id="reloadBtn" style="background:#6c757d;">🔄 重新加载</button>
         </div>
 
         <div id="statusBar" class="status-bar">
-            <span id="statusMsg" class="status-msg">鐏忚京鍗?/span>
+            <span id="statusMsg" class="status-msg">就绪</span>
             <span id="apiStatus"></span>
         </div>
     </div>
@@ -208,7 +208,8 @@
         let bridge = null;
 
         async function init() {
-            // 缁涘绶?bridge 鐏忚京鍗?            const maxWait = 30;
+            // 等待 bridge 就绪
+            const maxWait = 30;
             for (let i = 0; i < maxWait; i++) {
                 if (window.AstrBotPluginPage) {
                     bridge = window.AstrBotPluginPage;
@@ -217,7 +218,7 @@
                 await new Promise(r => setTimeout(r, 200));
             }
             if (!bridge) {
-                document.getElementById('statusMsg').textContent = '閳跨媴绗?Bridge 閺堫亜濮炴潪?;
+                document.getElementById('statusMsg').textContent = '❌ Bridge 未加载';
                 return;
             }
             await bridge.ready();
@@ -229,7 +230,7 @@
                 const data = await bridge.apiGet('settings');
                 document.getElementById('apiBase').value = data.api_base || 'https://api.lingyaai.cn';
                 document.getElementById('apiKey').value = '';
-                document.getElementById('apiKey').placeholder = data.has_api_key ? '瀹歌尪顔曠純顕嗙礄閻ｆ瑧鈹栨稉宥勬叏閺€鐧哥礆' : 'sk-...';
+                document.getElementById('apiKey').placeholder = data.has_api_key ? '已配置，留空则不修改' : 'sk-...';
                 document.getElementById('model').value = data.model || 'wan2.7-t2v';
                 document.getElementById('resolution').value = data.resolution || '720P';
                 document.getElementById('duration').value = data.duration || 5;
@@ -237,14 +238,15 @@
                 document.getElementById('pollTimeout').value = data.poll_timeout || 300;
                 document.getElementById('pollInterval').value = data.poll_interval || 15;
 
-                // API Key 閻樿埖鈧?                document.getElementById('apiStatus').innerHTML = data.has_api_key
-                    ? '<span class="badge badge-ok">閴?API Key 瀹告煡鍘ょ純?/span>'
-                    : '<span class="badge badge-missing">閳跨媴绗?閺堫亪鍘ょ純?API Key</span>';
+                // API Key 状态
+                document.getElementById('apiStatus').innerHTML = data.has_api_key
+                    ? '<span class="badge badge-ok">✅ API Key 已配置</span>'
+                    : '<span class="badge badge-missing">⚠️ 未配置 API Key</span>';
 
-                document.getElementById('statusMsg').textContent = '閴?鐠佸墽鐤嗗鎻掑鏉?;
+                document.getElementById('statusMsg').textContent = '✅ 设置已加载';
                 document.getElementById('statusMsg').className = 'status-msg success';
             } catch (e) {
-                document.getElementById('statusMsg').textContent = `閴?閸旂姾娴囩拋鍓х枂婢惰精瑙? ${e.message}`;
+                document.getElementById('statusMsg').textContent = `❌ 加载设置失败: ${e.message}`;
                 document.getElementById('statusMsg').className = 'status-msg error';
             }
         }
@@ -252,11 +254,13 @@
         async function saveSettings() {
             const btn = document.getElementById('saveBtn');
             btn.disabled = true;
-            btn.textContent = '閳?娣囨繂鐡ㄦ稉?..';
+            btn.textContent = '⏳ 保存中...';
 
             try {
-                // 閺嬪嫰鈧娀娓剁憰浣风箽鐎涙娈戦柊宥囩枂
-                // 閹绘帊娆㈤柊宥囩枂闁俺绻?AstrBot 閻?config API 娣囨繂鐡?                // 娴ｈ法鏁?GET 閸欏倹鏆熼弬鐟扮础鐟欙箑褰傞柊宥囩枂閺囧瓨鏌?                await bridge.apiPost('config/update', {
+                // 只在用户实际输入了新 key 时才提交
+                // 空字符串表示不修改（后端会跳过空值）
+                // 或者你可以改成：只在非空时加入 payload
+                await bridge.apiPost('config/update', {
                     api_base: document.getElementById('apiBase').value.trim(),
                     api_key: document.getElementById('apiKey').value.trim(),
                     model: document.getElementById('model').value,
@@ -267,18 +271,18 @@
                     poll_interval: parseInt(document.getElementById('pollInterval').value) || 15,
                 });
 
-                document.getElementById('statusMsg').textContent = '閴?鐠佸墽鐤嗗韫箽鐎涙﹫绱濈拠鐑藉櫢閸氼垱褰冩禒鑸靛灗闁插秵鏌婇崝鐘烘祰';
+                document.getElementById('statusMsg').textContent = '✅ 设置已保存并生效，无需重启插件';
                 document.getElementById('statusMsg').className = 'status-msg success';
             } catch (e) {
-                document.getElementById('statusMsg').textContent = `閴?娣囨繂鐡ㄦ径杈Е: ${e.message}`;
+                document.getElementById('statusMsg').textContent = `❌ 保存失败: ${e.message}`;
                 document.getElementById('statusMsg').className = 'status-msg error';
             } finally {
                 btn.disabled = false;
-                btn.textContent = '棣冩崙 娣囨繂鐡ㄧ拋鍓х枂';
+                btn.textContent = '💾 保存设置';
             }
         }
 
-        // 娴滃娆㈢紒鎴濈暰
+        // 事件绑定
         document.addEventListener('DOMContentLoaded', init);
         document.getElementById('saveBtn').addEventListener('click', saveSettings);
         document.getElementById('reloadBtn').addEventListener('click', loadSettings);
