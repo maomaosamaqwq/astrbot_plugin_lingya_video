@@ -1,6 +1,6 @@
 """
-鐏佃娊瑙嗛鐢熸垚鎻掍欢 - AstrBot
-鍩轰簬鐏佃娊API(lingyaai.cn)璋冪敤涓囩浉Wan2.7绯诲垪妯″瀷鐢熸垚瑙嗛
+灵芽视频生成插件 - AstrBot
+基于灵芽API(lingyaai.cn)调用万相Wan2.7系列模型生成视频
 """
 
 import asyncio
@@ -19,7 +19,7 @@ logger = logging.getLogger("astrbot")
 
 @register(
     name="astrbot_plugin_lingya_video",
-    desc="鍩轰簬鐏佃娊API鐨勪竾鐩竁an2.7瑙嗛鐢熸垚鎻掍欢",
+    desc="基于灵芽API的万相Wan2.7视频生成插件",
     author="maomaosamaqwq",
     version="0.1.0",
 )
@@ -32,21 +32,21 @@ class LingyaVideoPlugin(Star):
         self._api_key = config.get("api_key", "")
         self._active_tasks: dict[str, asyncio.Task] = {}
 
-        # 娉ㄥ唽 Web API
+        # 注册 Web API
         context.register_web_api(
             "/astrbot_plugin_lingya_video/settings",
             self.api_get_settings,
             ["GET"],
-            "鑾峰彇褰撳墠璁剧疆",
+            "获取当前设置",
         )
         context.register_web_api(
             "/astrbot_plugin_lingya_video/config/update",
             self.api_update_config,
             ["POST"],
-            "鏇存柊鎻掍欢閰嶇疆",
+            "更新插件配置",
         )
 
-    # 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ Tool 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+    # ─────────────────── Tool ───────────────────
 
     @filter.llm_tool()
     async def generate_video(
@@ -57,15 +57,15 @@ class LingyaVideoPlugin(Star):
         duration: Optional[int] = None,
         resolution: Optional[str] = None,
     ):
-        """鍩轰簬鐏佃娊API璋冪敤涓囩浉Wan2.7妯″瀷鐢熸垚瑙嗛銆?
+        """基于灵芽API调用万相Wan2.7模型生成视频。
         Args:
-            prompt(string): 瑙嗛鎻忚堪鎻愮ず璇嶏紝璇︾粏鎻忚堪鏈熸湜鐨勮棰戝唴瀹瑰拰瑙嗚椋庢牸锛屾敮鎸佷腑鑻辨枃
-            model(string): 妯″瀷鍚嶇О銆傚彲閫? wan2.7-t2v(鏂囩敓瑙嗛,榛樿), wan2.7-i2v(鍥剧敓瑙嗛), wan2.7-r2v(鍙傝€冪敓瑙嗛), wan2.7-videoedit(瑙嗛缂栬緫)
-            duration(number): 瑙嗛鏃堕暱(绉?銆倀2v/i2v:2-15, 榛樿5
-            resolution(string): 鍒嗚鲸鐜囥€傚彲閫? 720P(榛樿), 1080P
+            prompt(string): 视频描述提示词，详细描述期望的视频内容和视觉风格，支持中英文
+            model(string): 模型名称。可选: wan2.7-t2v(文生视频,默认), wan2.7-i2v(图生视频), wan2.7-r2v(参考生视频), wan2.7-videoedit(视频编辑)
+            duration(number): 视频时长(秒)。t2v/i2v:2-15, 默认5
+            resolution(string): 分辨率。可选: 720P(默认), 1080P
         """
         if not self._api_key:
-            yield event.plain_result("鏈厤缃?API Key锛岃鍦?WebUI 璁剧疆涓～鍐欍€?)
+            yield event.plain_result("未配置 API Key，请在 WebUI 设置中填写。")
             return
 
         model = model or self.config.get("model", "wan2.7-t2v")
@@ -76,14 +76,14 @@ class LingyaVideoPlugin(Star):
             self._run_generation(event, model, prompt, duration, resolution)
         )
         yield event.plain_result(
-            f"瑙嗛鐢熸垚浠诲姟宸叉彁浜わ紒\n"
-            f"妯″瀷: {model}\n"
-            f"鎻愮ず: {prompt[:100]}{'...' if len(prompt) > 100 else ''}\n"
-            f"鏃堕暱: {duration}s | 鍒嗚鲸鐜? {resolution}\n"
-            f"鐢熸垚涓紝璇风◢鍊?.."
+            f"视频生成任务已提交！\n"
+            f"模型: {model}\n"
+            f"提示: {prompt[:100]}{'...' if len(prompt) > 100 else ''}\n"
+            f"时长: {duration}s | 分辨率: {resolution}\n"
+            f"生成中，请稍候..."
         )
 
-    # 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ 鏍稿績閫昏緫 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+    # ─────────────────── 核心逻辑 ───────────────────
 
     async def _run_generation(
         self,
@@ -93,32 +93,32 @@ class LingyaVideoPlugin(Star):
         duration: int,
         resolution: str,
     ):
-        """寮傛鎵ц瑙嗛鐢熸垚"""
+        """异步执行视频生成"""
         async with self._semaphore:
             try:
                 task_id = await self._create_video_task(
                     model, prompt, duration, resolution
                 )
-                await event.send(f"浠诲姟宸插垱寤猴紝ID: `{task_id}`锛屾鍦ㄧ敓鎴愪腑...")
+                await event.send(f"任务已创建，ID: `{task_id}`，正在生成中...")
 
                 video_url = await self._poll_task(task_id)
                 if video_url:
                     await event.send(
-                        f"瑙嗛鐢熸垚瀹屾垚锛乗n"
-                        f"涓嬭浇閾炬帴(24h鏈夋晥): {video_url}\n"
-                        f"寤鸿灏藉揩涓嬭浇淇濆瓨鍒版湰鍦般€?
+                        f"视频生成完成！\n"
+                        f"下载链接(24h有效): {video_url}\n"
+                        f"建议尽快下载保存到本地。"
                     )
                 else:
-                    await event.send("瑙嗛鐢熸垚澶辫触锛岃绋嶅悗閲嶈瘯銆?)
+                    await event.send("视频生成失败，请稍后重试。")
 
             except Exception as e:
                 logger.error(f"Lingya video generation error: {e}")
-                await event.send(f"瑙嗛鐢熸垚鍑洪敊: {str(e)[:200]}")
+                await event.send(f"视频生成出错: {str(e)[:200]}")
 
     async def _create_video_task(
         self, model: str, prompt: str, duration: int, resolution: str
     ) -> str:
-        """鍒涘缓瑙嗛鐢熸垚浠诲姟锛岃繑鍥?task_id"""
+        """创建视频生成任务，返回 task_id"""
         url = f"{self._api_base}/v1/videos"
         headers = {
             "Authorization": f"Bearer {self._api_key}",
@@ -146,7 +146,7 @@ class LingyaVideoPlugin(Star):
                 return data["id"]
 
     async def _poll_task(self, task_id: str) -> Optional[str]:
-        """杞浠诲姟鐩村埌瀹屾垚鎴栬秴鏃讹紝杩斿洖 video_url 鎴?None"""
+        """轮询任务直到完成或超时，返回 video_url 或 None"""
         url = f"{self._api_base}/v1/videos/{task_id}"
         headers = {"Authorization": f"Bearer {self._api_key}"}
         timeout = self.config.get("poll_timeout", 300)
@@ -171,10 +171,10 @@ class LingyaVideoPlugin(Star):
             logger.warning(f"Video task {task_id} timed out after {timeout}s")
             return None
 
-    # 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ Web API 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+    # ─────────────────── Web API ───────────────────
 
     async def api_update_config(self):
-        """鏇存柊鎻掍欢閰嶇疆锛堥€氳繃 POST JSON body锛?""
+        """更新插件配置（通过 POST JSON body）"""
         from quart import request
 
         data = await request.get_json()
@@ -202,11 +202,11 @@ class LingyaVideoPlugin(Star):
         return jsonify({
             "ok": True,
             "changed": changes,
-            "message": f"鏇存柊浜?{len(changes)} 涓厤缃」",
+            "message": f"更新了 {len(changes)} 个配置项",
         })
 
     async def api_get_settings(self):
-        """杩斿洖褰撳墠鎻掍欢璁剧疆"""
+        """返回当前插件设置"""
         return jsonify({
             "api_base": self._api_base,
             "model": self.config.get("model", "wan2.7-t2v"),
@@ -219,7 +219,7 @@ class LingyaVideoPlugin(Star):
         })
 
     async def terminate(self):
-        """鎻掍欢鍗歌浇鏃舵竻鐞?""
+        """插件卸载时清理"""
         for task in self._active_tasks.values():
             task.cancel()
         self._active_tasks.clear()
