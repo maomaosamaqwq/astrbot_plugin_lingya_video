@@ -1,0 +1,53 @@
+{
+    "api_base": {
+        "description": "API 閸╄櫣顢呴崷鏉挎絻",
+        "type": "string",
+        "hint": "姒涙顓? https://api.lingyaai.cn",
+        "default": "https://api.lingyaai.cn"
+    },
+    "api_key": {
+        "description": "API Key",
+        "type": "string",
+        "hint": "閸︺劎浼掗懞鎴掓姢閻楀矂銆夐棃銏犲灡瀵?,
+        "obvious_hint": false,
+        "default": ""
+    },
+    "model": {
+        "description": "姒涙顓诲Ο鈥崇€?,
+        "type": "string",
+        "options": ["wan2.7-t2v", "wan2.7-i2v", "wan2.7-r2v", "wan2.7-videoedit"],
+        "labels": ["閺傚洨鏁撶憴鍡涱暥", "閸ュ墽鏁撶憴鍡涱暥", "閸欏倽鈧啰鏁撶憴鍡涱暥", "鐟欏棝顣剁紓鏍帆"],
+        "default": "wan2.7-t2v"
+    },
+    "resolution": {
+        "description": "閸掑棜椴搁悳?,
+        "type": "string",
+        "options": ["720P", "1080P"],
+        "labels": ["720P", "1080P"],
+        "default": "720P"
+    },
+    "duration": {
+        "description": "鐟欏棝顣堕弮鍫曟毐閿涘牏顫楅敍?,
+        "type": "int",
+        "hint": "t2v/i2v:2-15, r2v/videoedit:2-10",
+        "default": 5
+    },
+    "max_concurrent": {
+        "description": "閺堚偓婢堆冭嫙閸欐垳鎹㈤崝鈩冩殶",
+        "type": "int",
+        "hint": "閸氬本妞傛潻娑滎攽閻ㄥ嫯顫嬫０鎴犳晸閹存劒鎹㈤崝鈥茬瑐闂?,
+        "default": 3
+    },
+    "poll_timeout": {
+        "description": "鏉烆喛顕楃搾鍛閿涘牏顫楅敍?,
+        "type": "int",
+        "hint": "缁涘绶熺憴鍡涱暥閻㈢喐鍨氱€瑰本鍨氶惃鍕付闂€鎸庢闂?,
+        "default": 300
+    },
+    "poll_interval": {
+        "description": "鏉烆喛顕楅梻鎾閿涘牏顫楅敍?,
+        "type": "int",
+        "hint": "濮ｅ繑顐奸弻銉嚄娴犺濮熼悩鑸碘偓浣烘畱闂傛挳娈?,
+        "default": 15
+    }
+}

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>閻忎絻濞婄憴鍡涱暥 - 鐠佸墽鐤?/title>
+    <style>
+        :root {
+            --bg: #f5f7fa;
+            --card-bg: #fff;
+            --text: #1f2a3a;
+            --text-secondary: #6b7785;
+            --border: #e3e8ef;
+            --primary: #4f6ef7;
+            --primary-hover: #3b5de7;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 24px;
+            line-height: 1.6;
+        }
+        .container { max-width: 720px; margin: 0 auto; }
+        h1 {
+            font-size: 22px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+        }
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-group:last-child { margin-bottom: 0; }
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+        input, select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--card-bg);
+            color: var(--text);
+            transition: border-color .2s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79,110,247,.12);
+        }
+        input::placeholder { color: #adb5bd; }
+        .hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-primary:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            margin-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+        .status-msg {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .status-msg.success { color: var(--success); }
+        .status-msg.error { color: var(--danger); }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-ok { background: #d4edda; color: #155724; }
+        .badge-missing { background: #f8d7da; color: #721c24; }
+        .inline-row {
+            display: flex;
+            gap: 12px;
+        }
+        .inline-row .form-group { flex: 1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>棣冨箑 閻忎絻濞婄憴鍡涱暥閻㈢喐鍨?璺?鐠佸墽鐤?/h1>
+
+        <div class="card">
+            <div class="card-title">API 闁板秶鐤?/div>
+            <div class="form-group">
+                <label>API 閸︽澘娼?/label>
+                <input type="text" id="apiBase" placeholder="https://api.lingyaai.cn" />
+                <div class="hint">閻忎絻濞?API 閸╄櫣顢呴崷鏉挎絻閿涘矂绮拋銈勮礋 https://api.lingyaai.cn</div>
+            </div>
+            <div class="form-group">
+                <label>API Key</label>
+                <input type="password" id="apiKey" placeholder="sk-..." />
+                <div class="hint">閸︺劎浼掗懞鑺ュ付閸掕泛褰撮妴灞兼姢閻楀被鈧秹銆夐棃銏犲灡瀵?/div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">閻㈢喐鍨氶崣鍌涙殶</div>
+            <div class="form-group">
+                <label>濡€崇€?/label>
+                <select id="model">
+                    <option value="wan2.7-t2v">閺傚洨鏁撶憴鍡涱暥 (wan2.7-t2v)</option>
+                    <option value="wan2.7-i2v">閸ュ墽鏁撶憴鍡涱暥 (wan2.7-i2v)</option>
+                    <option value="wan2.7-r2v">閸欏倽鈧啰鏁撶憴鍡涱暥 (wan2.7-r2v)</option>
+                    <option value="wan2.7-videoedit">鐟欏棝顣剁紓鏍帆 (wan2.7-videoedit)</option>
+                </select>
+                <div class="hint">閺傚洨鏁撶憴鍡涱暥閸╄桨绨弬鍥ㄦ拱閻㈢喐鍨氶敍娑樻禈閻㈢喕顫嬫０?閸欏倽鈧啰鏁撶憴鍡涱暥/鐟欏棝顣剁紓鏍帆闂団偓鐟曚椒绱堕崗銉ョ崯娴ｆ挾绀岄弶?/div>
+            </div>
+            <div class="inline-row">
+                <div class="form-group">
+                    <label>閸掑棜椴搁悳?/label>
+                    <select id="resolution">
+                        <option value="720P">720P</option>
+                        <option value="1080P">1080P</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>姒涙顓婚弮鍫曟毐 (缁?</label>
+                    <input type="number" id="duration" min="2" max="15" placeholder="5" />
+                    <div class="hint">t2v/i2v: 2-15, r2v/videoedit: 2-10</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">娴犺濮熼幒褍鍩?/div>
+            <div class="inline-row">
+                <div class="form-group">
+                    <label>閺堚偓婢堆冭嫙閸欐垳鎹㈤崝鈩冩殶</label>
+                    <input type="number" id="maxConcurrent" min="1" max="10" placeholder="3" />
+                    <div class="hint">閸氬本妞傛潻娑滎攽閻ㄥ嫮鏁撻幋鎰崲閸斺€茬瑐闂?/div>
+                </div>
+                <div class="form-group">
+                    <label>鐡掑懏妞傞弮鍫曟？ (缁?</label>
+                    <input type="number" id="pollTimeout" min="60" max="1800" placeholder="300" />
+                    <div class="hint">缁涘绶熺憴鍡涱暥鐎瑰本鍨氶惃鍕付闂€鎸庢闂?/div>
+                </div>
+                <div class="form-group">
+                    <label>鏉烆喛顕楅梻鎾 (缁?</label>
+                    <input type="number" id="pollInterval" min="5" max="60" placeholder="15" />
+                    <div class="hint">濮ｅ繑顐奸弻銉嚄閻樿埖鈧胶娈戦梻鎾</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:12px;">
+            <button class="btn btn-primary" id="saveBtn">棣冩崙 娣囨繂鐡ㄧ拋鍓х枂</button>
+            <button class="btn btn-primary" id="reloadBtn" style="background:#6c757d;">棣冩敡 闁插秵鏌婇崝鐘烘祰</button>
+        </div>
+
+        <div id="statusBar" class="status-bar">
+            <span id="statusMsg" class="status-msg">鐏忚京鍗?/span>
+            <span id="apiStatus"></span>
+        </div>
+    </div>
+
+    <script>
+        const PLUGIN = 'astrbot_plugin_lingya_video';
+        let bridge = null;
+
+        async function init() {
+            // 缁涘绶?bridge 鐏忚京鍗?            const maxWait = 30;
+            for (let i = 0; i < maxWait; i++) {
+                if (window.AstrBotPluginPage) {
+                    bridge = window.AstrBotPluginPage;
+                    break;
+                }
+                await new Promise(r => setTimeout(r, 200));
+            }
+            if (!bridge) {
+                document.getElementById('statusMsg').textContent = '閳跨媴绗?Bridge 閺堫亜濮炴潪?;
+                return;
+            }
+            await bridge.ready();
+            await loadSettings();
+        }
+
+        async function loadSettings() {
+            try {
+                const data = await bridge.apiGet('settings');
+                document.getElementById('apiBase').value = data.api_base || 'https://api.lingyaai.cn';
+                document.getElementById('apiKey').value = '';
+                document.getElementById('apiKey').placeholder = data.has_api_key ? '瀹歌尪顔曠純顕嗙礄閻ｆ瑧鈹栨稉宥勬叏閺€鐧哥礆' : 'sk-...';
+                document.getElementById('model').value = data.model || 'wan2.7-t2v';
+                document.getElementById('resolution').value = data.resolution || '720P';
+                document.getElementById('duration').value = data.duration || 5;
+                document.getElementById('maxConcurrent').value = data.max_concurrent || 3;
+                document.getElementById('pollTimeout').value = data.poll_timeout || 300;
+                document.getElementById('pollInterval').value = data.poll_interval || 15;
+
+                // API Key 閻樿埖鈧?                document.getElementById('apiStatus').innerHTML = data.has_api_key
+                    ? '<span class="badge badge-ok">閴?API Key 瀹告煡鍘ょ純?/span>'
+                    : '<span class="badge badge-missing">閳跨媴绗?閺堫亪鍘ょ純?API Key</span>';
+
+                document.getElementById('statusMsg').textContent = '閴?鐠佸墽鐤嗗鎻掑鏉?;
+                document.getElementById('statusMsg').className = 'status-msg success';
+            } catch (e) {
+                document.getElementById('statusMsg').textContent = `閴?閸旂姾娴囩拋鍓х枂婢惰精瑙? ${e.message}`;
+                document.getElementById('statusMsg').className = 'status-msg error';
+            }
+        }
+
+        async function saveSettings() {
+            const btn = document.getElementById('saveBtn');
+            btn.disabled = true;
+            btn.textContent = '閳?娣囨繂鐡ㄦ稉?..';
+
+            try {
+                // 閺嬪嫰鈧娀娓剁憰浣风箽鐎涙娈戦柊宥囩枂
+                // 閹绘帊娆㈤柊宥囩枂闁俺绻?AstrBot 閻?config API 娣囨繂鐡?                // 娴ｈ法鏁?GET 閸欏倹鏆熼弬鐟扮础鐟欙箑褰傞柊宥囩枂閺囧瓨鏌?                await bridge.apiPost('config/update', {
+                    api_base: document.getElementById('apiBase').value.trim(),
+                    api_key: document.getElementById('apiKey').value.trim(),
+                    model: document.getElementById('model').value,
+                    resolution: document.getElementById('resolution').value,
+                    duration: parseInt(document.getElementById('duration').value) || 5,
+                    max_concurrent: parseInt(document.getElementById('maxConcurrent').value) || 3,
+                    poll_timeout: parseInt(document.getElementById('pollTimeout').value) || 300,
+                    poll_interval: parseInt(document.getElementById('pollInterval').value) || 15,
+                });
+
+                document.getElementById('statusMsg').textContent = '閴?鐠佸墽鐤嗗韫箽鐎涙﹫绱濈拠鐑藉櫢閸氼垱褰冩禒鑸靛灗闁插秵鏌婇崝鐘烘祰';
+                document.getElementById('statusMsg').className = 'status-msg success';
+            } catch (e) {
+                document.getElementById('statusMsg').textContent = `閴?娣囨繂鐡ㄦ径杈Е: ${e.message}`;
+                document.getElementById('statusMsg').className = 'status-msg error';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '棣冩崙 娣囨繂鐡ㄧ拋鍓х枂';
+            }
+        }
+
+        // 娴滃娆㈢紒鎴濈暰
+        document.addEventListener('DOMContentLoaded', init);
+        document.getElementById('saveBtn').addEventListener('click', saveSettings);
+        document.getElementById('reloadBtn').addEventListener('click', loadSettings);
+    </script>
+</body>
+</html>
