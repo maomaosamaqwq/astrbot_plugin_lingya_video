@@ -10,7 +10,7 @@ from typing import Optional
 import aiohttp
 from quart import jsonify
 
-from astrbot.api.event import filter, AstrMessageEvent
+from astrbot.api.event import filter, AstrMessageEvent, MessageChain
 from astrbot.api.star import Context, Star, register
 from astrbot.api import AstrBotConfig
 
@@ -72,8 +72,11 @@ class LingyaVideoPlugin(Star):
         duration = duration or self.config.get("duration", 5)
         resolution = resolution or self.config.get("resolution", "720P")
 
+        # 保存会话标识，用于后台任务发送消息
+        umo = event.unified_msg_origin
+
         asyncio.create_task(
-            self._run_generation(event, model, prompt, duration, resolution)
+            self._run_generation(umo, model, prompt, duration, resolution)
         )
         yield event.plain_result(
             f"视频生成任务已提交！\n"
@@ -85,9 +88,14 @@ class LingyaVideoPlugin(Star):
 
     # ─────────────────── 核心逻辑 ───────────────────
 
+    async def _send(self, umo: str, text: str):
+        """通过会话标识发送消息"""
+        message_chain = MessageChain().message(text)
+        await self.context.send_message(umo, message_chain)
+
     async def _run_generation(
         self,
-        event: AstrMessageEvent,
+        umo: str,
         model: str,
         prompt: str,
         duration: int,
@@ -99,21 +107,22 @@ class LingyaVideoPlugin(Star):
                 task_id = await self._create_video_task(
                     model, prompt, duration, resolution
                 )
-                await event.send(f"任务已创建，ID: `{task_id}`，正在生成中...")
+                await self._send(umo, f"任务已创建，ID: `{task_id}`，正在生成中...")
 
                 video_url = await self._poll_task(task_id)
                 if video_url:
-                    await event.send(
+                    await self._send(
+                        umo,
                         f"视频生成完成！\n"
                         f"下载链接(24h有效): {video_url}\n"
                         f"建议尽快下载保存到本地。"
                     )
                 else:
-                    await event.send("视频生成失败，请稍后重试。")
+                    await self._send(umo, "视频生成失败，请稍后重试。")
 
             except Exception as e:
                 logger.error(f"Lingya video generation error: {e}")
-                await event.send(f"视频生成出错: {str(e)[:200]}")
+                await self._send(umo, f"视频生成出错: {str(e)[:200]}")
 
     async def _create_video_task(
         self, model: str, prompt: str, duration: int, resolution: str
