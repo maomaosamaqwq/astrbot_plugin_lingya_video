@@ -72,52 +72,44 @@ class LingyaVideoPlugin(Star):
         duration = duration or self.config.get("duration", 5)
         resolution = resolution or self.config.get("resolution", "720P")
 
-        # 保存event对象，用于后台任务发送消息
-        asyncio.create_task(
-            self._run_generation(event, model, prompt, duration, resolution)
-        )
+        # 先返回"任务已提交"给 LLM
         yield event.plain_result(
-            f"视频生成任务已提交！\n"
-            f"模型: {model}\n"
+            f"视频生成任务已提交，模型 {model} 正在生成中，请稍候...\n"
             f"提示: {prompt[:100]}{'...' if len(prompt) > 100 else ''}\n"
-            f"时长: {duration}s | 分辨率: {resolution}\n"
-            f"生成中，请稍候..."
+            f"时长: {duration}s | 分辨率: {resolution}"
         )
+
+        # 等待生成完成，返回结果给 LLM
+        try:
+            result = await self._run_generation(model, prompt, duration, resolution)
+            yield event.plain_result(result)
+        except Exception as e:
+            logger.error(f"Lingya video generation error: {e}")
+            yield event.plain_result(f"视频生成失败: {str(e)[:200]}")
 
     # ─────────────────── 核心逻辑 ───────────────────
 
     async def _run_generation(
         self,
-        event: AstrMessageEvent,
         model: str,
         prompt: str,
         duration: int,
         resolution: str,
-    ):
-        """异步执行视频生成"""
+    ) -> str:
+        """执行视频生成，返回结果描述"""
         async with self._semaphore:
-            try:
-                task_id = await self._create_video_task(
-                    model, prompt, duration, resolution
+            task_id = await self._create_video_task(
+                model, prompt, duration, resolution
+            )
+            video_url = await self._poll_task(task_id)
+            if video_url:
+                return (
+                    f"视频生成完成！\n"
+                    f"下载链接(24h有效): {video_url}\n"
+                    f"建议尽快下载保存到本地。"
                 )
-                await event.send(event.plain_result(f"任务已创建，ID: `{task_id}`，正在生成中..."))
-
-                video_url = await self._poll_task(task_id)
-                if video_url:
-                    await event.send(event.plain_result(
-                        f"视频生成完成！\n"
-                        f"下载链接(24h有效): {video_url}\n"
-                        f"建议尽快下载保存到本地。"
-                    ))
-                else:
-                    await event.send(event.plain_result("视频生成失败，请稍后重试。"))
-
-            except Exception as e:
-                logger.error(f"Lingya video generation error: {e}")
-                try:
-                    await event.send(event.plain_result(f"视频生成出错: {str(e)[:200]}"))
-                except Exception as send_exc:
-                    logger.error(f"无法发送错误消息给用户: {send_exc}")
+            else:
+                return f"视频生成失败 (task_id: {task_id})，请稍后重试。"
 
     async def _create_video_task(
         self, model: str, prompt: str, duration: int, resolution: str
